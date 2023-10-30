@@ -1,0 +1,156 @@
+type Comment {
+    commentId: ID!
+    timePosted: String
+    content: String
+    author: String
+    ticket: Ticket
+    updatedTime:String
+}
+
+type Ticket {
+    ticketId: ID!
+    status: StatusEnum
+    details: String
+    submittedDate: String
+    lastUpdatedDate: String
+    priority: PriorityEnum
+    source: SourceEnum
+    assignedTo: User
+    comments: [Comment]
+    description: String
+}
+
+type User {
+    id: ID!
+    firstName: String
+    lastName: String
+    title: String
+    numOfTickets: Int
+    numOfOpenTickets: Int
+    numOfClosedTickets: Int
+    assignedTickets: [Ticket]
+}
+
+enum StatusEnum {
+    NEW
+    OPEN
+    RE_OPENED
+    IN_PROGRESS
+    BLOCKED
+    RESOLVED
+    CLOSED
+}
+
+enum PriorityEnum {
+    LOW
+    MEDIUM
+    HIGH
+    SEVERE
+}
+
+enum SourceEnum {
+    EMAIL
+    PHONE
+    WEB
+    CHAT
+    QA
+    OTHER
+    SOCIAL
+}
+
+enum TypeEnum {
+    BUG
+    FEATURE_REQUEST
+}
+
+type Query {
+    getTicket(ticketId: ID!): Ticket
+    getAllTickets: [Ticket]
+    getComment(commentId: ID!):Comment
+    getAllComments(ticketId: ID!):[Comment]
+    getUser(userId: ID!): User
+    getAllUsers:[User]
+}
+
+type Mutation {
+    # Create a new ticket
+    createTicket(
+        status: StatusEnum!
+        details: String!
+        priority: PriorityEnum!
+        source: SourceEnum!
+        assignedTo: ID
+        ticketType: TypeEnum!
+        description: String!
+    ): Ticket
+
+    # Update a ticket
+    updateTicket(
+        ticketId: ID!
+        status: StatusEnum
+        details: String
+        priority: PriorityEnum
+        source: SourceEnum
+        assignedTo: ID
+        ticketType: TypeEnum
+        description: String
+    ): Ticket
+
+    closeTicket(
+        ticketId: ID!
+    ): Ticket
+
+    # Delete a ticket
+    deleteTicket(ticketId: ID!): String
+
+    # Create a new user
+    createUser(
+        firstName: String!
+        lastName: String!
+        title: String
+        email: String!
+    ): User
+
+    # Update an existing user
+    updateUser(
+        userId: ID!
+        firstName: String
+        lastName: String
+        title: String
+        email: String
+    ): User
+
+    # Delete a user
+    deleteUser(userId: ID!): String
+
+    # Associate a ticket with a user
+    associateTicketWithUser(
+        userId: ID!
+        ticketId: ID!
+    ): User
+
+    # Dissociate a ticket from a user
+    dissociateTicketFromUser(
+        userId: ID!
+        ticketId: ID!
+    ): User
+
+    # Create a new comment
+    createComment(
+        content: String!
+        authorId: ID!
+        ticketId: ID!
+    ): Comment
+
+    # Update an existing comment
+    updateComment(
+        commentId: ID!
+        content: String
+    ): Comment
+
+    # Delete a comment
+    deleteComment(commentId: ID!): String
+}
+
+
+
