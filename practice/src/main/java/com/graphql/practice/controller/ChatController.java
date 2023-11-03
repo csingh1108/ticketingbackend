@@ -1,8 +1,6 @@
 package com.graphql.practice.controller;
 
 import com.graphql.practice.domain.ChatMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -12,16 +10,17 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ChatController {
 
-    @Autowired
-    public ChatController(SimpMessagingTemplate messagingTemplate){
+    private final SimpMessagingTemplate messagingTemplate;
+
+    public ChatController(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
     }
 
-    @MessageMapping("/support/{userId}")
-    @SendTo("/user/{userId}/support")
-    public ChatMessage supportMessage(@DestinationVariable String userId, @Payload ChatMessage message) {
-
+    @MessageMapping("/sendMessage")
+    @SendTo("/support/chat")
+    public ChatMessage sendMessage(@Payload ChatMessage message) {
+        System.out.println("Received message: " + message.getChatText());
         return message;
     }
-
 
 }
