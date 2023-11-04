@@ -4,5 +4,6 @@ public enum PriorityEnum {
     SEVERE,
     HIGH,
     MEDIUM,
-    LOW
+    LOW,
+    NONE
 }

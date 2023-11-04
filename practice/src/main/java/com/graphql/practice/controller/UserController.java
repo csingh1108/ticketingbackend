@@ -8,6 +8,8 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Controller
 public class UserController {
 
@@ -17,6 +19,11 @@ public class UserController {
     @QueryMapping
     public User getUser(@Argument Long id){
         return userService.getUser(id);
+    }
+
+    @QueryMapping
+    public List<User> getAllUsers(){
+        return userService.getAllUsers();
     }
 
     @MutationMapping
@@ -45,7 +52,6 @@ public class UserController {
             @Argument Long userId,
             @Argument Long ticketId
     ) {
-        // Implement logic to associate a ticket with a user and return the updated user
         return userService.associateTicketWithUser(userId, ticketId);
     }
 
@@ -54,7 +60,6 @@ public class UserController {
             @Argument Long userId,
             @Argument Long ticketId
     ) {
-        // Implement logic to dissociate a ticket from a user and return the updated user
         return userService.dissociateTicketFromUser(userId, ticketId);
     }
 
